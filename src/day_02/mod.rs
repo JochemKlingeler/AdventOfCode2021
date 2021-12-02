@@ -7,19 +7,9 @@ pub fn part1() -> i32 {
 fn do_part1(input: &str) -> i32 {
     let mut x = 0;
     let mut y = 0;
-    let lines = input.lines();
-    lines.for_each(|s| {
-        let mut split = s.splitn(2, ' ');
-        let (direction, unit) = (
-            split
-                .next()
-                .expect("Expected to be able to parse direction"),
-            split
-                .next()
-                .expect("Expected to be able to parse unit")
-                .parse::<i32>()
-                .expect("Expected to be able to cast unit"),
-        );
+    input.lines().for_each(|s| {
+        let (direction, unit) = s.split_once(' ').expect("Can split by space");
+        let unit: i32 = unit.parse().expect("Can parse unit to int");
         match direction {
             "forward" => x += unit,
             "down" => y += unit,
@@ -38,19 +28,9 @@ fn do_part2(input: &str) -> i32 {
     let mut x = 0;
     let mut y = 0;
     let mut aim = 0;
-    let lines = input.lines();
-    lines.for_each(|s| {
-        let mut split = s.splitn(2, ' ');
-        let (direction, unit) = (
-            split
-                .next()
-                .expect("Expected to be able to parse direction"),
-            split
-                .next()
-                .expect("Expected to be able to parse unit")
-                .parse::<i32>()
-                .expect("Expected to be able to cast unit"),
-        );
+    input.lines().for_each(|s| {
+        let (direction, unit) = s.split_once(' ').expect("Can split by space");
+        let unit: i32 = unit.parse().expect("Can parse unit to int");
         match direction {
             "forward" => {
                 x += unit;
