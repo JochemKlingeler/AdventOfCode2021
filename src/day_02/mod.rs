@@ -34,7 +34,7 @@ fn do_part2(input: &str) -> i32 {
         match direction {
             "forward" => {
                 x += unit;
-                y += unit * aim
+                y += unit * aim;
             }
             "down" => aim += unit,
             "up" => aim -= unit,
@@ -52,33 +52,20 @@ fn get_input() -> String {
 mod tests {
     use super::*;
 
-    #[test]
-    fn part1_demo() {
-        assert_eq!(
-            150,
-            do_part1(
-                "forward 5
+    const TEST_INPUT: &str = "forward 5
 down 5
 forward 8
 up 3
 down 8
-forward 2"
-            )
-        )
+forward 2";
+
+    #[test]
+    fn part1_demo() {
+        assert_eq!(150, do_part1(TEST_INPUT));
     }
 
     #[test]
     fn part2_demo() {
-        assert_eq!(
-            900,
-            do_part2(
-                "forward 5
-down 5
-forward 8
-up 3
-down 8
-forward 2"
-            )
-        )
+        assert_eq!(900, do_part2(TEST_INPUT));
     }
 }
