@@ -53,13 +53,57 @@ fn do_part1(input: &str) -> i32 {
     gamma_value * epsilon_value
 }
 
-//pub fn part2() -> i32 {
-//    do_part2(&get_input())
-//}
-//
-//fn do_part2(input: &str) -> i32 {
-//    1
-//}
+pub fn part2() -> i32 {
+    do_part2(&get_input())
+}
+
+fn do_part2(input: &str) -> i32 {
+    get_oxygen_generator_rating(input) * get_co2_scrubber_rating(input)
+}
+
+fn get_oxygen_generator_rating(input: &str) -> i32 {
+    let vec_input: Vec<&str> = input.lines().collect();
+    let oxygen = recursive_find_through_list(&vec_input, 0, true);
+    i32::from_str_radix(oxygen, 2).expect("Can parse binary")
+}
+
+fn get_co2_scrubber_rating(input: &str) -> i32 {
+    let vec_input: Vec<&str> = input.lines().collect();
+    let co2 = recursive_find_through_list(&vec_input, 0, false);
+    i32::from_str_radix(co2, 2).expect("Can parse binary")
+}
+
+fn recursive_find_through_list<'a>(input: &[&'a str], index: usize, most_common: bool) -> &'a str {
+    if input.len() == 1 {
+        return input.iter().last().unwrap();
+    }
+    let mut one_list: Vec<&str> = Vec::new();
+    let mut zero_list: Vec<&str> = Vec::new();
+    for s in input {
+        let char = s.chars().nth(index).unwrap();
+        if '1' == char {
+            one_list.push(s);
+        } else {
+            zero_list.push(s);
+        }
+    }
+
+    let one_count = one_list.len();
+    let zero_count = zero_list.len();
+    let list_to_use;
+    if most_common {
+        if one_count >= zero_count {
+            list_to_use = one_list;
+        } else {
+            list_to_use = zero_list;
+        }
+    } else if one_count >= zero_count {
+        list_to_use = zero_list;
+    } else {
+        list_to_use = one_list;
+    }
+    recursive_find_through_list(&list_to_use, index + 1, most_common)
+}
 
 fn get_input() -> String {
     fs::read_to_string("src/day_03/input.txt").expect("Could not load input file!")
@@ -87,8 +131,18 @@ mod tests {
         assert_eq!(198, do_part1(TEST_INPUT));
     }
 
-    //#[test]
-    //fn part2_demo() {
-    //    assert_eq!(-1, do_part2(TEST_INPUT));
-    //}
+    #[test]
+    fn part2_demo() {
+        assert_eq!(230, do_part2(TEST_INPUT));
+    }
+
+    #[test]
+    fn part2_oxygen_demo() {
+        assert_eq!(23, get_oxygen_generator_rating(TEST_INPUT));
+    }
+
+    #[test]
+    fn part2_co2_demo() {
+        assert_eq!(10, get_co2_scrubber_rating(TEST_INPUT));
+    }
 }
